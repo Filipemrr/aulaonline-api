@@ -32,6 +32,12 @@ Nesta API todas as requisições vem com uma Resposta Padrão, todas as requisi�
 > #### Parâmetros - (Bearer Token)
 > - `Bearer Token`: O Token que eh gerado quando usuario faz o login.
 
+### - Recupera Um atributto do Usuario Logado (GET /getUserAttribute?requiredAttribute=email)
+> This endpoint returns a specific attribute of the logged user.
+> #### Parâmetros - (Token + Attribute)
+> - `Bearer Token`: Unique auth token of the user. 
+> - `Attribute`: The required attribute that you want in the response, in this case can be only: name, email
+
 # /trilha
 
 ---
