@@ -14,7 +14,7 @@ import { CustomResponse } from '../../core/domain/ResponseModel/CustomResponse'
 import { CommentService } from './comment.service';
 import { getCommentsDto, NewCommentDto } from './dtos/new-comment-dto';
 import { NewCommentDtoPipe } from './pipes/new-comment-dto.pipe';
-import { CurrentUserDto } from '../users/dtos/currentUser.dto';
+import { CurrentUserDto } from '../users/dtos/outputDto\'s/currentUser.dto';
 
 @Controller('comment')
 export class CommentController {

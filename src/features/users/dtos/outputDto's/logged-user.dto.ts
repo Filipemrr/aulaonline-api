@@ -1,4 +1,4 @@
-import { UserEntity } from '../../../core/data/entities/userEntity/user.entity';
+import { UserEntity } from '../../../../core/data/entities/userEntity/user.entity';
 
 export class LoggedUserDto {
   public token: string;

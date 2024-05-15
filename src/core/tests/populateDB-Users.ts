@@ -33,7 +33,7 @@ const usersData: User[] = [
 async function createUser(user: User) {
   try {
     const response = await axios.post(
-      `http://localhost:3000/users/create`,
+      `http://localhost:3000/users/createUser`,
       user,
     );
     console.log('Usuário criado com sucesso:', response.data);

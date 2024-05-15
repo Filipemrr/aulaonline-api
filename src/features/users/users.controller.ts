@@ -4,25 +4,39 @@ import {
   Get,
   HttpStatus,
   Post,
-  Put,
+  Put, Query,
   Req,
   Res,
-  UsePipes,
-} from '@nestjs/common';
+  UsePipes
+} from "@nestjs/common";
 import { Response } from 'express';
 import { CustomResponse } from '../../core/domain/ResponseModel/CustomResponse'
 import { UsersService } from './users.service';
-import { LoginDto } from './dtos/login.dto';
+import { LoginDto } from "./dtos/outputDto's/login.dto";
 import { LoginDtoPipe } from './pipes/login-dto.pipe';
-import { LoggedUserDto } from './dtos/logged-user.dto';
+import { LoggedUserDto } from "./dtos/outputDto's/logged-user.dto";
 import { CreateUserDtoPipe } from './pipes/create-user-dto.pipe';
-import { CreateUserDto } from './dtos/create-user.dto';
-import { CurrentUserDto } from './dtos/currentUser.dto';
+import { CreateUserDto } from "./dtos/inputDto's/createUser.dto";
+import { CurrentUserDto } from "./dtos/outputDto's/currentUser.dto";
+import { GetUserAttributeDto } from "./dtos/inputDto's/getUserAttribute.dto";
+import { GetUserAttributeDtoPipe } from './pipes/getUserAttribute-dto.pipe';
 
 @Controller('users')
 export class UsersController {
   constructor(private usersService: UsersService) {}
-  @Get('getUser')
+  @Post('/createUser')
+  @UsePipes(CreateUserDtoPipe)
+  async addUser(
+    @Res() res: Response,
+    @Body() createUserDTO: CreateUserDto,
+  ): Promise<Response> {
+    const registerUserCredentials =
+      await this.usersService.createUser(createUserDTO);
+    return res
+      .status(HttpStatus.OK)
+      .json(new CustomResponse(200, 'success', registerUserCredentials));
+  }
+  @Get('/getUser')
   async getUserInfo(
     @Res() res: Response,
     @Req() req: Request,
@@ -32,16 +46,19 @@ export class UsersController {
     );
     return res.status(200).json(new CustomResponse(200, 'Success', userInfo));
   }
-  @Post('/create')
-  @UsePipes(CreateUserDtoPipe)
-  async addUser(
+  @Get('/getUserAttribute')
+  @UsePipes(GetUserAttributeDtoPipe)
+  async getUserAttribute(
     @Res() res: Response,
-    @Body() createUserDTO: CreateUserDto,
+    @Query() requiredAttribute: GetUserAttributeDto,
+    @Req() req: Request,
   ): Promise<Response> {
-    const userTokens = await this.usersService.createUser(createUserDTO);
-    return res
-      .status(HttpStatus.OK)
-      .json(new CustomResponse(200, 'success', userTokens));
+    const userInfo: GetUserAttributeDto =
+      await this.usersService.getUserAttribute(
+        req['userId'],
+        requiredAttribute,
+      );
+    return res.status(200).json(new CustomResponse(200, 'Success', userInfo));
   }
 
   @Post('/login')
