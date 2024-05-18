@@ -1,9 +1,13 @@
-import { Entity, PrimaryGeneratedColumn, Column } from 'typeorm';
+import { Entity, PrimaryGeneratedColumn, Column, OneToMany } from 'typeorm';
+import { NotationEntity } from '../noteEntity/note.entity';
 
 @Entity()
 export class UserEntity {
   @PrimaryGeneratedColumn()
   public id: number;
+
+  @OneToMany(() => NotationEntity, (notation) => notation.user)
+  notations!: NotationEntity[];
 
   @Column()
   public name: string;

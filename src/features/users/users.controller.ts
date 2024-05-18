@@ -7,8 +7,8 @@ import {
   Put, Query,
   Req,
   Res,
-  UsePipes
-} from "@nestjs/common";
+  UsePipes,
+} from '@nestjs/common';
 import { Response } from 'express';
 import { CustomResponse } from '../../core/domain/ResponseModel/CustomResponse'
 import { UsersService } from './users.service';
@@ -20,7 +20,8 @@ import { CreateUserDto } from "./dtos/inputDto's/createUser.dto";
 import { CurrentUserDto } from "./dtos/outputDto's/currentUser.dto";
 import { GetUserAttributeDto } from "./dtos/inputDto's/getUserAttribute.dto";
 import { GetUserAttributeDtoPipe } from './pipes/getUserAttribute-dto.pipe';
-
+import { ApiTags } from '@nestjs/swagger';
+@ApiTags('Users')
 @Controller('users')
 export class UsersController {
   constructor(private usersService: UsersService) {}

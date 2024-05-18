@@ -11,7 +11,6 @@ import { AuthMiddleware } from "../../core/infra/middlewares/auth-middleware.ser
   providers: [...UserProviders, UsersService],
   exports: [UsersService],
 })
-
 export class UsersModule implements NestModule {
   configure(consumer: MiddlewareConsumer): any {
     consumer

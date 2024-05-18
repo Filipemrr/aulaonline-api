@@ -82,7 +82,7 @@ async function createAula(aula: Aula) {
     console.log('Aula criada com sucesso:', response.data);
   } catch (error) {
     if (axios.isAxiosError(error)) {
-      console.error('Erro ao criar aula:', error.response?.data);
+      console.error('Erro ao criar video:', error.response?.data);
     } else {
       console.error('Erro desconhecido:', error);
     }

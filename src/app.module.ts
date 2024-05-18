@@ -3,14 +3,10 @@ import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { UsersModule } from './features/users/users.module';
 import * as dotenv from 'dotenv';
-import { AulaModule } from './features/aula/aula.module';
-import { RatingModule } from './features/rating/rating.module';
-import { CommentModule } from './features/comment/comment.module';
-import { CourseModule } from './features/course/course.module';
-import { TrilhaModule } from './features/trilha/trilha.module';
+import { VideoModule } from './features/video/video.module';
 dotenv.config();
 @Module({
-  imports: [UsersModule, AulaModule, RatingModule, CommentModule, CourseModule, TrilhaModule],
+  imports: [UsersModule, VideoModule],
   controllers: [AppController],
   providers: [AppService],
 })
