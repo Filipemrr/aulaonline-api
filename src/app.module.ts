@@ -4,9 +4,10 @@ import { AppService } from './app.service';
 import { UsersModule } from './features/users/users.module';
 import * as dotenv from 'dotenv';
 import { VideoModule } from './features/video/video.module';
+import { NotationsModule } from './features/notations/notations.module';
 dotenv.config();
 @Module({
-  imports: [UsersModule, VideoModule],
+  imports: [UsersModule, VideoModule, NotationsModule],
   controllers: [AppController],
   providers: [AppService],
 })

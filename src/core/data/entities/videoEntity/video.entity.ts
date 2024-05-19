@@ -7,7 +7,7 @@ import {
   OneToOne,
 } from 'typeorm';
 import { UserEntity } from '../userEntity/user.entity';
-import { NotationEntity } from '../noteEntity/note.entity';
+import { NotationEntity } from '../noteEntity/notation.entity';
 
 @Entity()
 export class VideoEntity {
@@ -27,9 +27,9 @@ export class VideoEntity {
   @Column()
   video_thumb_url!: string;
 
-  @OneToOne(() => NotationEntity, (notation) => notation.video, {
+  @OneToOne(() => NotationEntity, {
     nullable: true,
   })
-  @JoinColumn({ name: 'notation' })
+  @JoinColumn({ name: 'notation_id' })
   notation!: NotationEntity | null;
 }

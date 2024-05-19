@@ -1,5 +1,5 @@
 import { DataSource } from 'typeorm';
-import { VideoEntity } from './videoEntity';
+import { VideoEntity } from './video.entity';
 
 export const VideoProviders = [
   {

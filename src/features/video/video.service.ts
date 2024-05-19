@@ -8,10 +8,11 @@ import { Repository } from 'typeorm';
 
 import { NewVideoDto } from './dtos/new-video-dto';
 import { UserEntity } from '../../core/data/entities/userEntity/user.entity';
-import { VideoEntity } from '../../core/data/entities/videoEntity/videoEntity';
+import { VideoEntity } from '../../core/data/entities/videoEntity/video.entity';
 import * as process from 'process';
 import * as dotenv from 'dotenv';
 import axios from 'axios';
+import { NotationEntity } from "../../core/data/entities/noteEntity/notation.entity";
 
 dotenv.config();
 @Injectable()
@@ -24,6 +25,7 @@ export class VideoService {
     private userRepository: Repository<UserEntity>,
   ) {}
   async addVideo(userID: number, prospectVideo: NewVideoDto): Promise<object> {
+    console.log(userID, prospectVideo);
     const user = await this.userRepository.findOneBy({ id: userID });
     if (!user) {
       throw new BadRequestException('Usuario Nao Existe No Sistema');

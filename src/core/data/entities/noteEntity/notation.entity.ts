@@ -6,7 +6,7 @@ import {
   JoinColumn,
 } from 'typeorm';
 import { UserEntity } from '../userEntity/user.entity';
-import { VideoEntity } from '../videoEntity/videoEntity';
+import { VideoEntity } from '../videoEntity/video.entity';
 
 @Entity()
 export class NotationEntity {
@@ -20,7 +20,7 @@ export class NotationEntity {
   @JoinColumn({ name: 'autor' })
   user!: UserEntity;
 
-  @ManyToOne(() => VideoEntity, (video) => video.notation)
-  @JoinColumn({ name: 'video' })
-  video!: VideoEntity;
+  @ManyToOne(() => VideoEntity)
+  @JoinColumn({ name: 'video_id' })
+  notation!: VideoEntity;
 }

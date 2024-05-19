@@ -1,7 +1,7 @@
 import { DataSource } from 'typeorm';
-import { NotationEntity } from './note.entity';
+import { NotationEntity } from './notation.entity';
 
-export const NoteProviders = [
+export const NotationProviders = [
   {
     provide: 'NOTATION_REPOSITORY',
     useFactory: (dataSource: DataSource) =>

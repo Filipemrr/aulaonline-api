@@ -10,10 +10,16 @@ import { VideoService } from './video.service';
 import { AuthMiddleware } from '../../core/infra/middlewares/auth-middleware.service';
 import { VideoProviders } from '../../core/data/entities/videoEntity/video.providers';
 import { UserProviders } from '../../core/data/entities/userEntity/user.providers';
+import { NotationProviders } from '../../core/data/entities/noteEntity/notation.providers';
 @Module({
   imports: [DatabaseModule],
   controllers: [VideoController],
-  providers: [...VideoProviders,...UserProviders , VideoService],
+  providers: [
+    ...VideoProviders,
+    ...UserProviders,
+    ...NotationProviders,
+    VideoService,
+  ],
   exports: [VideoService],
 })
 export class VideoModule implements NestModule {
