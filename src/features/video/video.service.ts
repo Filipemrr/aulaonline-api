@@ -1,18 +1,13 @@
-import {
-  BadRequestException,
-  Inject,
-  Injectable,
-  NotFoundException,
-} from '@nestjs/common';
-import { Repository } from 'typeorm';
+import { BadRequestException, Inject, Injectable, NotFoundException } from "@nestjs/common";
+import { Repository } from "typeorm";
 
-import { NewVideoDto } from './dtos/new-video-dto';
-import { UserEntity } from '../../core/data/entities/userEntity/user.entity';
-import { VideoEntity } from '../../core/data/entities/videoEntity/video.entity';
-import * as process from 'process';
-import * as dotenv from 'dotenv';
-import axios from 'axios';
-import { NotationEntity } from "../../core/data/entities/noteEntity/notation.entity";
+import { NewVideoDto } from "./dtos/new-video-dto";
+import { UserEntity } from "../../core/data/entities/userEntity/user.entity";
+import { VideoEntity } from "../../core/data/entities/videoEntity/video.entity";
+import * as process from "process";
+import * as dotenv from "dotenv";
+import axios from "axios";
+import { DeleteVideoDto } from "./dtos/delete-video-dto";
 
 dotenv.config();
 @Injectable()
@@ -25,7 +20,6 @@ export class VideoService {
     private userRepository: Repository<UserEntity>,
   ) {}
   async addVideo(userID: number, prospectVideo: NewVideoDto): Promise<object> {
-    console.log(userID, prospectVideo);
     const user = await this.userRepository.findOneBy({ id: userID });
     if (!user) {
       throw new BadRequestException('Usuario Nao Existe No Sistema');
@@ -38,7 +32,6 @@ export class VideoService {
     });
     if (video)
       throw new NotFoundException('Voce Ja Cadastrou esse video antes.');
-
     try {
       const { title, thumbnailUrl } = await this.getYouTubeVideoInfo(
         prospectVideo.video_link,
@@ -49,14 +42,47 @@ export class VideoService {
       newVideo.video_thumb_url = thumbnailUrl;
       newVideo.video_link = prospectVideo.video_link;
       newVideo.user = user;
-      console.log(newVideo);
       await this.videoRepository.save(newVideo);
     } catch (error) {
       throw error;
     }
+    delete user.password;
+    delete user.refreshToken;
     return { mensagem: 'O video foi salvo no historico do usuario' };
   }
 
+  async getAllVideos(userID: number): Promise<VideoEntity[]> {
+    const user = await this.userRepository.findOneBy({ id: userID });
+    if (!user) {
+      throw new BadRequestException('Usuario Nao Existe No Sistema');
+    }
+    const videos: VideoEntity[] = await this.videoRepository.find({
+      where: { user: user },
+    });
+
+    if (!videos || videos.length === 0) {
+      throw new NotFoundException('Usuario nao possui videos em seu historico');
+    }
+    return videos;
+  }
+
+  async deleteVideo(userId: number, deleteVideoDto: DeleteVideoDto) {
+    if (userId === undefined)
+      throw new BadRequestException(
+        'Nao foi possivel deletar o video pois o Usuario nao autenticado eh autenticado',
+      );
+
+    const video = await this.videoRepository.findOne({
+      where: {
+        video_id: deleteVideoDto.videoID,
+        user: { id: userId },
+      },
+    });
+    if (!video) throw new NotFoundException(`Video Nao encontrado`);
+
+    await this.videoRepository.delete(deleteVideoDto.videoID);
+    return { message: 'Video deletado com sucesso' };
+  }
   async getYouTubeVideoInfo(
     videoLink: string,
     apiKey: string,
@@ -64,8 +90,9 @@ export class VideoService {
     try {
       const videoId = this.extractVideoId(videoLink);
       if (!videoId)
-        throw new BadRequestException('falha ao extrair video pelo ID');
-
+        throw new BadRequestException(
+          'falha ao extrair video pelo ID, possivelmente o video eh invalido ou nao existe',
+        );
       const response = await axios.get(
         `https://www.googleapis.com/youtube/v3/videos?id=${videoId}&key=${apiKey}&part=snippet,contentDetails`,
       );

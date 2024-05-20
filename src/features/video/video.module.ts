@@ -27,8 +27,9 @@ export class VideoModule implements NestModule {
     consumer
       .apply(AuthMiddleware)
       .forRoutes(
-        { path: 'video/all', method: RequestMethod.GET },
-        { path: 'video/allAulasOfCourse', method: RequestMethod.GET },
+        { path: 'video/addVideo', method: RequestMethod.POST },
+        { path: 'video/allVideosOfUser', method: RequestMethod.GET },
+        { path: 'video/deleteVideo', method: RequestMethod.DELETE },
       );
   }
 }
