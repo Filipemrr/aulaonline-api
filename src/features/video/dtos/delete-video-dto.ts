@@ -1,3 +1,3 @@
 export class DeleteVideoDto {
-  videoID: number;
+  videoID: string;
 }

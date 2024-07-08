@@ -5,21 +5,15 @@ import {
   RequestMethod,
 } from '@nestjs/common';
 import { VideoController } from './video.controller';
-import { DatabaseModule } from '../../core/data/database.module';
 import { VideoService } from './video.service';
 import { AuthMiddleware } from '../../core/infra/middlewares/auth-middleware.service';
-import { VideoProviders } from '../../core/data/entities/videoEntity/video.providers';
-import { UserProviders } from '../../core/data/entities/userEntity/user.providers';
-import { NotationProviders } from '../../core/data/entities/noteEntity/notation.providers';
+import { Video } from '../../core/data/entities/videoEntitie';
+import { User } from '../../core/data/entities/userEntitie';
+import { TypeOrmModule } from '@nestjs/typeorm';
 @Module({
-  imports: [DatabaseModule],
+  imports: [TypeOrmModule.forFeature([Video, User])],
   controllers: [VideoController],
-  providers: [
-    ...VideoProviders,
-    ...UserProviders,
-    ...NotationProviders,
-    VideoService,
-  ],
+  providers: [VideoService],
   exports: [VideoService],
 })
 export class VideoModule implements NestModule {

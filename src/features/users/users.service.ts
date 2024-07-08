@@ -1,37 +1,37 @@
 import {
   BadRequestException,
   ConflictException,
-  Inject,
   Injectable,
   NotFoundException,
-  UnauthorizedException
-} from "@nestjs/common";
+  UnauthorizedException,
+} from '@nestjs/common';
 import { Repository } from 'typeorm';
-import { UserEntity } from '../../core/data/entities/userEntity/user.entity';
+import { User } from '../../core/data/entities/userEntitie';
 import * as jwt from 'jsonwebtoken';
-import { LoginDto } from './dtos/outputDto\'s/login.dto';
-import { LoggedUserDto } from './dtos/outputDto\'s/logged-user.dto';
-import { CreateUserDto } from './dtos/inputDto\'s/createUser.dto';
-import { CurrentUserDto } from './dtos/outputDto\'s/currentUser.dto';
-import { UserMessage } from "./dtos/messageDTO";
+import { LoginDto } from "./dtos/outputDto's/login.dto";
+import { LoggedUserDto } from "./dtos/outputDto's/logged-user.dto";
+import { CreateUserDto } from "./dtos/inputDto's/createUser.dto";
+import { CurrentUserDto } from "./dtos/outputDto's/currentUser.dto";
+import { UserMessage } from './dtos/messageDTO';
 import { GetUserAttributeDto } from "./dtos/inputDto's/getUserAttribute.dto";
+import { InjectRepository } from '@nestjs/typeorm';
 
 @Injectable()
 export class UsersService {
   constructor(
-    @Inject('USER_REPOSITORY')
-    private userRepository: Repository<UserEntity>,
+    @InjectRepository(User)
+    private userRepository: Repository<User>,
   ) {}
 
   async createUser(prospectUser: CreateUserDto): Promise<UserMessage> {
-    const previousUser: UserEntity = await this.userRepository.findOneBy({
+    const previousUser: User = await this.userRepository.findOneBy({
       email: prospectUser.email,
     });
     if (previousUser) {
       throw new ConflictException('Este email já foi associado a um usuário');
     }
 
-    const createdUser: UserEntity = this.userRepository.create();
+    const createdUser: User = this.userRepository.create();
 
     createdUser.name = prospectUser.name;
     createdUser.email = prospectUser.email;
@@ -40,8 +40,8 @@ export class UsersService {
     return { message: createdUser.name + ' foi registrado' };
   }
   async login(loginDto: LoginDto): Promise<LoggedUserDto> {
-    console.log("hi");
-    const user: UserEntity = await this.userRepository.findOneBy({
+    console.log('hi');
+    const user = await this.userRepository.findOneBy({
       email: loginDto.email,
       password: loginDto.password,
     });
@@ -61,7 +61,7 @@ export class UsersService {
     return { user: user, refreshToken: refreshToken, token: token };
   }
   async getUser(userId: number): Promise<CurrentUserDto> {
-    const user: UserEntity = await this.userRepository.findOne({
+    const user: User = await this.userRepository.findOne({
       where: {
         id: userId,
       },
@@ -77,7 +77,7 @@ export class UsersService {
     userId: number,
     Attribute: GetUserAttributeDto,
   ): Promise<GetUserAttributeDto> {
-    const user: UserEntity = await this.userRepository.findOne({
+    const user: User = await this.userRepository.findOne({
       where: {
         id: userId,
       },
@@ -93,7 +93,7 @@ export class UsersService {
     throw new BadRequestException('Atributo nao encontrado.');
   }
   async refresh(token: string, userId: number): Promise<LoggedUserDto> {
-    const user: UserEntity = await this.userRepository.findOneBy({
+    const user: User = await this.userRepository.findOneBy({
       id: userId,
       refreshToken: token,
     });

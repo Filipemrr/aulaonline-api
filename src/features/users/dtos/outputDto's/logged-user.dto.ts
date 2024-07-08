@@ -1,4 +1,4 @@
-import { UserEntity } from '../../../../core/data/entities/userEntity/user.entity';
+import { User } from '../../../../core/data/entities/userEntitie';
 import { ApiProperty } from '@nestjs/swagger';
 
 export class LoggedUserDto {
@@ -7,9 +7,9 @@ export class LoggedUserDto {
   @ApiProperty()
   public refreshToken: string;
   @ApiProperty()
-  public user: UserEntity;
+  public user: User;
 
-  constructor(token: string, refreshToken: string, user: UserEntity) {
+  constructor(token: string, refreshToken: string, user: User) {
     this.user = user;
     this.token = token;
     this.refreshToken = refreshToken;

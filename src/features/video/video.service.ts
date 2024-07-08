@@ -1,30 +1,34 @@
-import { BadRequestException, Inject, Injectable, NotFoundException } from "@nestjs/common";
-import { Repository } from "typeorm";
-
-import { NewVideoDto } from "./dtos/new-video-dto";
-import { UserEntity } from "../../core/data/entities/userEntity/user.entity";
-import { VideoEntity } from "../../core/data/entities/videoEntity/video.entity";
-import * as process from "process";
-import * as dotenv from "dotenv";
-import axios from "axios";
-import { DeleteVideoDto } from "./dtos/delete-video-dto";
+import {
+  BadRequestException,
+  Injectable,
+  NotFoundException,
+} from '@nestjs/common';
+import { Repository } from 'typeorm';
+import { NewVideoDto } from './dtos/new-video-dto';
+import { Video } from '../../core/data/entities/videoEntitie';
+import * as process from 'process';
+import * as dotenv from 'dotenv';
+import axios from 'axios';
+import { DeleteVideoDto } from './dtos/delete-video-dto';
+import { InjectRepository } from '@nestjs/typeorm';
+import { User } from '../../core/data/entities/userEntitie';
 
 dotenv.config();
 @Injectable()
 export class VideoService {
   constructor(
-    @Inject('VIDEO_REPOSITORY')
-    private videoRepository: Repository<VideoEntity>,
+    @InjectRepository(Video)
+    private videoRepository: Repository<Video>,
 
-    @Inject('USER_REPOSITORY')
-    private userRepository: Repository<UserEntity>,
+    @InjectRepository(User)
+    private userRepository: Repository<User>,
   ) {}
   async addVideo(userID: number, prospectVideo: NewVideoDto): Promise<object> {
     const user = await this.userRepository.findOneBy({ id: userID });
     if (!user) {
       throw new BadRequestException('Usuario Nao Existe No Sistema');
     }
-    const video: VideoEntity = await this.videoRepository.findOne({
+    const video = await this.videoRepository.findOne({
       where: {
         video_link: prospectVideo.video_link,
         user: user,
@@ -37,7 +41,7 @@ export class VideoService {
         prospectVideo.video_link,
         process.env.GOOGLE_API_KEY,
       );
-      const newVideo: VideoEntity = this.videoRepository.create();
+      const newVideo: Video = this.videoRepository.create();
       newVideo.title = title;
       newVideo.video_thumb_url = thumbnailUrl;
       newVideo.video_link = prospectVideo.video_link;
@@ -51,12 +55,12 @@ export class VideoService {
     return { mensagem: 'O video foi salvo no historico do usuario' };
   }
 
-  async getAllVideos(userID: number): Promise<VideoEntity[]> {
+  async getAllVideos(userID: number): Promise<Video[]> {
     const user = await this.userRepository.findOneBy({ id: userID });
     if (!user) {
       throw new BadRequestException('Usuario Nao Existe No Sistema');
     }
-    const videos: VideoEntity[] = await this.videoRepository.find({
+    const videos: Video[] = await this.videoRepository.find({
       where: { user: user },
     });
 

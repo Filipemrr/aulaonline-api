@@ -7,15 +7,15 @@ import {
   Req,
   Res,
   UsePipes
-} from "@nestjs/common";
+} from '@nestjs/common';
 import { Response } from 'express';
 import { CustomResponse } from '../../core/domain/ResponseModel/CustomResponse';
 import { VideoService } from './video.service';
 import { NewVideoDto } from './dtos/new-video-dto';
 import { CreateVideoDtoPipe } from './pipes/create-video-dto.pipe';
-import { VideoEntity } from '../../core/data/entities/videoEntity/video.entity';
+import { Video } from '../../core/data/entities/videoEntitie';
 import { ApiTags } from '@nestjs/swagger';
-import { DeleteVideoDto } from "./dtos/delete-video-dto";
+import { DeleteVideoDto } from './dtos/delete-video-dto';
 
 @ApiTags('Videos')
 @Controller('video')
@@ -41,7 +41,7 @@ export class VideoController {
     @Res() res: Response,
     @Req() req: Request,
   ): Promise<Response> {
-    const allVideos: VideoEntity[] = await this.videoService.getAllVideos(
+    const allVideos: Video[] = await this.videoService.getAllVideos(
       req['userId'],
     );
     return res

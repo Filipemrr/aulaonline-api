@@ -1,13 +1,13 @@
 import { Module } from '@nestjs/common';
+import { TypeOrmModule } from '@nestjs/typeorm';
+import { Annotation } from '../../core/data/entities/annotationEntitie';
 import { NotationsController } from './notations.controller';
 import { NotationsService } from './notations.service';
-import { DatabaseModule } from '../../core/data/database.module';
-import { NotationProviders } from '../../core/data/entities/noteEntity/notation.providers';
 
 @Module({
-  imports: [DatabaseModule],
+  imports: [TypeOrmModule.forFeature([Annotation])],
   controllers: [NotationsController],
-  providers: [...NotationProviders, NotationsService],
+  providers: [NotationsService],
   exports: [NotationsService],
 })
 export class NotationsModule {}
