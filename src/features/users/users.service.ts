@@ -6,7 +6,7 @@ import {
   UnauthorizedException,
 } from '@nestjs/common';
 import { Repository } from 'typeorm';
-import { User } from '../../core/data/entities/userEntitie';
+import { User } from '../../core/data/entities/user.entity';
 import * as jwt from 'jsonwebtoken';
 import { LoginDto } from "./dtos/outputDto's/login.dto";
 import { LoggedUserDto } from "./dtos/outputDto's/logged-user.dto";

@@ -11,6 +11,7 @@ import * as process from 'process';
     UsersModule,
     VideoModule,
     NotationsModule,
+    AppModule,
     TypeOrmModule.forRoot({
       type: 'postgres',
       port: 5432,
@@ -23,4 +24,5 @@ import * as process from 'process';
     }),
   ],
 })
+
 export class AppModule {}

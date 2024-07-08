@@ -7,8 +7,8 @@ import {
 import { VideoController } from './video.controller';
 import { VideoService } from './video.service';
 import { AuthMiddleware } from '../../core/infra/middlewares/auth-middleware.service';
-import { Video } from '../../core/data/entities/videoEntitie';
-import { User } from '../../core/data/entities/userEntitie';
+import { Video } from '../../core/data/entities/video.entity';
+import { User } from '../../core/data/entities/user.entity';
 import { TypeOrmModule } from '@nestjs/typeorm';
 @Module({
   imports: [TypeOrmModule.forFeature([Video, User])],

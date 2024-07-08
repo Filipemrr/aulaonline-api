@@ -74,6 +74,10 @@ export class UsersController {
       .json(new CustomResponse(200, 'success', userTokens));
   }
 
+  @Get('/test')
+  async test(){
+    console.log(__dirname)
+  }
   @Put('/refresh')
   async refresh(
     @Res() res: Response,

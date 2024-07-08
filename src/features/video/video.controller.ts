@@ -13,7 +13,7 @@ import { CustomResponse } from '../../core/domain/ResponseModel/CustomResponse';
 import { VideoService } from './video.service';
 import { NewVideoDto } from './dtos/new-video-dto';
 import { CreateVideoDtoPipe } from './pipes/create-video-dto.pipe';
-import { Video } from '../../core/data/entities/videoEntitie';
+import { Video } from '../../core/data/entities/video.entity';
 import { ApiTags } from '@nestjs/swagger';
 import { DeleteVideoDto } from './dtos/delete-video-dto';
 

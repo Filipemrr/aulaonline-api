@@ -6,7 +6,7 @@ import {
   ManyToOne,
   JoinColumn,
 } from 'typeorm';
-import { User } from './userEntitie';
+import { User } from './user.entity';
 
 @Entity()
 export class Video extends BaseEntity {

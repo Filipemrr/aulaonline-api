@@ -4,14 +4,20 @@ import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
   const config = new DocumentBuilder()
-    .setTitle('Aula Online API')
-    .setDescription('backend da aplicacao, Aula Online')
+    .setTitle('AulaOnline API')
+    .setDescription('Backend Da Aplicacao Aula Online')
     .setVersion('1.0')
-    .addTag('Users')
+    .addTag('AulaOnline')
     .addBearerAuth()
     .build();
   const document = SwaggerModule.createDocument(app, config);
   SwaggerModule.setup('api', app, document);
+
+  app.enableCors({
+    origin: '*',
+    methods: 'GET,HEAD,PUT,PATCH,POST,DELETE,OPTIONS',
+    credentials: true,
+  });
 
   app.getHttpAdapter().get('/docs-json', (req, res) => {
     res.json(document);

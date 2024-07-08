@@ -5,13 +5,13 @@ import {
 } from '@nestjs/common';
 import { Repository } from 'typeorm';
 import { NewVideoDto } from './dtos/new-video-dto';
-import { Video } from '../../core/data/entities/videoEntitie';
+import { Video } from '../../core/data/entities/video.entity';
 import * as process from 'process';
 import * as dotenv from 'dotenv';
 import axios from 'axios';
 import { DeleteVideoDto } from './dtos/delete-video-dto';
 import { InjectRepository } from '@nestjs/typeorm';
-import { User } from '../../core/data/entities/userEntitie';
+import { User } from '../../core/data/entities/user.entity';
 
 dotenv.config();
 @Injectable()

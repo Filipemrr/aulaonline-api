@@ -3,7 +3,7 @@ import { UsersService } from "./users.service";
 import { AuthMiddleware } from "../../core/infra/middlewares/auth-middleware.service";
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { UsersController } from './users.controller';
-import { User } from '../../core/data/entities/userEntitie';
+import { User } from '../../core/data/entities/user.entity';
 
 @Module({
   imports: [TypeOrmModule.forFeature([User])],

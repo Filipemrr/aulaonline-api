@@ -6,8 +6,8 @@ import {
   ManyToOne,
   JoinColumn,
 } from 'typeorm';
-import { User } from './userEntitie';
-import { Video } from './videoEntitie';
+import { User } from './user.entity';
+import { Video } from './video.entity';
 
 @Entity()
 export class Annotation extends BaseEntity {
